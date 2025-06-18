@@ -1,0 +1,66 @@
+{
+  "name": "trustnet-ai-dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.3.4",
+    "bootstrap": "^5.2.3",
+    "chart.js": "^4.2.1",
+    "framer-motion": "^10.18.0",
+    "leaflet": "^1.9.4",
+    "leaflet.heat": "^0.2.0",
+    "leaflet.markercluster": "^1.5.3",
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.7.2",
+    "react-chartjs-2": "^5.2.0",
+    "react-csv": "^2.2.2",
+    "react-dom": "^18.2.0",
+    "react-hot-toast": "^2.5.2",
+    "react-icons": "^4.12.0",
+    "react-leaflet": "^4.2.1",
+    "react-leaflet-cluster": "^2.1.0",
+    "react-leaflet-heatmap-layer": "^2.0.0",
+    "react-leaflet-heatmap-layer-v3": "^3.0.3-beta-1",
+    "react-loading-skeleton": "^3.5.0",
+    "react-router-dom": "^6.9.0",
+    "react-scripts": "5.0.1",
+    "react-table": "^7.8.0",
+    "react-tooltip": "^5.29.1",
+    "socket.io-client": "^4.6.1",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "lint": "eslint ./src --ext .js,.jsx"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "proxy": "http://localhost:8002",
+  "devDependencies": {
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.24",
+    "tailwindcss": "^3.3.2"
+  }
+}

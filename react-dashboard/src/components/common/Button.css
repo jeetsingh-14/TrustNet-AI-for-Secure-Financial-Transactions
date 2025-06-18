@@ -1,0 +1,124 @@
+/* Button.css - Standardized button styles for TrustNet AI */
+
+.trustnet-btn {
+  font-weight: 500;
+  border-radius: 4px;
+  transition: all 0.2s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Primary button */
+.trustnet-btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.trustnet-btn-primary:hover, 
+.trustnet-btn-primary:focus {
+  background-color: #1a2a3a;
+  border-color: #1a2a3a;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+/* Secondary button */
+.trustnet-btn-secondary {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+.trustnet-btn-secondary:hover, 
+.trustnet-btn-secondary:focus {
+  background-color: #2980b9;
+  border-color: #2980b9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+/* Success button */
+.trustnet-btn-success {
+  background-color: var(--success-color);
+  border-color: var(--success-color);
+}
+
+.trustnet-btn-success:hover, 
+.trustnet-btn-success:focus {
+  background-color: #27ae60;
+  border-color: #27ae60;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+/* Danger button */
+.trustnet-btn-danger {
+  background-color: var(--danger-color);
+  border-color: var(--danger-color);
+}
+
+.trustnet-btn-danger:hover, 
+.trustnet-btn-danger:focus {
+  background-color: #c0392b;
+  border-color: #c0392b;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+/* Warning button */
+.trustnet-btn-warning {
+  background-color: var(--warning-color);
+  border-color: var(--warning-color);
+}
+
+.trustnet-btn-warning:hover, 
+.trustnet-btn-warning:focus {
+  background-color: #d35400;
+  border-color: #d35400;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+/* Outline buttons */
+.trustnet-btn-outline-primary,
+.trustnet-btn-outline-secondary,
+.trustnet-btn-outline-success,
+.trustnet-btn-outline-danger,
+.trustnet-btn-outline-warning {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.trustnet-btn-outline-primary:hover,
+.trustnet-btn-outline-secondary:hover,
+.trustnet-btn-outline-success:hover,
+.trustnet-btn-outline-danger:hover,
+.trustnet-btn-outline-warning:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Button icon */
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Button sizes */
+.trustnet-btn.btn-sm {
+  font-size: 0.875rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.trustnet-btn.btn-lg {
+  font-size: 1.25rem;
+  padding: 0.5rem 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .trustnet-btn {
+    padding: 0.375rem 0.75rem;
+  }
+}
