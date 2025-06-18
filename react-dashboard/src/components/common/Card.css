@@ -1,0 +1,79 @@
+/* Card.css - Standardized card styles for TrustNet AI */
+
+.trustnet-card {
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  border: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.trustnet-card:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Card header */
+.trustnet-card-header {
+  padding: 15px 20px;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  border-radius: 8px 8px 0 0 !important;
+}
+
+/* Card body */
+.trustnet-card-body {
+  padding: 20px;
+}
+
+/* Card variants */
+.trustnet-card-primary .trustnet-card-header {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.trustnet-card-secondary .trustnet-card-header {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.trustnet-card-success .trustnet-card-header {
+  background-color: var(--success-color);
+  color: white;
+}
+
+.trustnet-card-danger .trustnet-card-header {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.trustnet-card-warning .trustnet-card-header {
+  background-color: var(--warning-color);
+  color: white;
+}
+
+/* Stats card variant */
+.trustnet-card.stats-card {
+  text-align: center;
+  padding: 10px;
+  transition: transform 0.3s ease;
+}
+
+.trustnet-card.stats-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .trustnet-card {
+    margin-bottom: 15px;
+  }
+  
+  .trustnet-card-header {
+    padding: 12px 15px;
+  }
+  
+  .trustnet-card-body {
+    padding: 15px;
+  }
+}

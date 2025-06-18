@@ -1,0 +1,610 @@
+/* Dashboard.css - Styles for the dashboard page */
+
+.dashboard {
+  background: linear-gradient(to bottom right, #f7fafc, #ffffff);
+  min-height: 100vh;
+  padding: 1rem;
+  background-image: radial-gradient(circle at 10% 20%, rgba(220, 20, 60, 0.03) 0%, rgba(139, 0, 0, 0.01) 90%);
+}
+
+.dashboard h1 {
+  color: var(--primary-color);
+  font-weight: bold;
+  font-size: 1.875rem;
+  margin-bottom: 2rem;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.dashboard h1::after {
+  content: '';
+  @apply absolute bottom-0 left-0 w-full h-1 rounded-full;
+  background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+  transform: scaleX(0.7);
+  transform-origin: left;
+  animation: expand 1.5s ease-out forwards;
+  box-shadow: 0 2px 10px rgba(220, 20, 60, 0.3);
+}
+
+@keyframes expand {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Card styling */
+.card {
+  @apply rounded-2xl shadow-md border-0 overflow-hidden transition-all duration-300 bg-white;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(237, 242, 247, 0.8);
+}
+
+.card:hover {
+  @apply shadow-lg;
+  transform: translateY(-4px);
+  border-color: rgba(203, 213, 224, 0.5);
+}
+
+.card-header {
+  @apply py-4 px-6 font-semibold text-white border-b border-gray-100;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+}
+
+/* Fraud alert items */
+.fraud-alerts {
+  @apply flex flex-col gap-4;
+}
+
+.fraud-alert-item {
+  @apply border border-gray-100 rounded-xl p-5 bg-white transition-all duration-300;
+  box-shadow: var(--shadow-sm);
+}
+
+.fraud-alert-item:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(203, 213, 224, 0.5);
+}
+
+.alert-header {
+  @apply flex justify-between items-center mb-3;
+}
+
+.alert-header h5 {
+  @apply m-0 flex items-center text-base font-semibold;
+}
+
+.alert-body {
+  @apply text-sm text-gray-700;
+}
+
+/* Stats cards */
+.stats-card {
+  @apply overflow-hidden relative rounded-xl bg-white p-6 h-full;
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border: 1px solid rgba(237, 242, 247, 0.8);
+}
+
+.stats-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-5px);
+  border-color: rgba(203, 213, 224, 0.5);
+}
+
+.stats-card .icon {
+  @apply text-4xl mb-4;
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.1));
+  color: var(--secondary-color);
+}
+
+.stats-card .value {
+  @apply text-3xl font-bold mb-2;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.5px;
+}
+
+.stats-card .label {
+  @apply text-gray-600 font-medium;
+  letter-spacing: 0.5px;
+}
+
+.stats-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.stats-card:hover::before {
+  opacity: 1;
+}
+
+.stats-card::after {
+  content: '';
+  @apply absolute top-0 left-0 w-full h-full;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: translateX(-100%);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Chart container */
+.chart-container {
+  @apply h-80 w-full mx-auto rounded-xl overflow-hidden bg-white p-4;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(237, 242, 247, 0.8);
+}
+
+/* Map container */
+.map-container {
+  width: 100%;
+  height: 500px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 0;
+  z-index: 1;
+}
+
+.map-container .leaflet-container {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Fix for Leaflet markers */
+.leaflet-div-icon {
+  background: transparent;
+  border: none;
+}
+
+/* Custom popup styling */
+.leaflet-popup-content-wrapper {
+  border-radius: 8px;
+  box-shadow: var(--shadow-md);
+  padding: 0;
+  overflow: hidden;
+}
+
+.leaflet-popup-content {
+  margin: 0;
+  padding: 12px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Responsive adjustments for map */
+@media (max-width: 768px) {
+  .map-container {
+    height: 350px;
+  }
+}
+
+/* Transaction table */
+.transaction-table {
+  @apply w-full border-collapse;
+}
+
+.transaction-table th {
+  @apply py-4 px-6 text-left font-semibold text-white text-sm uppercase tracking-wider;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+}
+
+.transaction-table th:first-child {
+  @apply rounded-tl-xl;
+}
+
+.transaction-table th:last-child {
+  @apply rounded-tr-xl;
+}
+
+.transaction-table td {
+  @apply py-4 px-6 border-b border-gray-100;
+}
+
+.transaction-row {
+  @apply transition-all duration-200 cursor-pointer;
+  background-color: white;
+}
+
+.transaction-row:hover {
+  background-color: rgba(49, 130, 206, 0.05);
+}
+
+.transaction-row:last-child td:first-child {
+  @apply rounded-bl-xl;
+}
+
+.transaction-row:last-child td:last-child {
+  @apply rounded-br-xl;
+}
+
+/* Buttons */
+.btn-primary {
+  @apply text-white font-medium py-3 px-5 rounded-lg transition-all duration-300 flex items-center justify-center gap-2;
+  background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  background: linear-gradient(135deg, var(--secondary-light), var(--secondary-color));
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-outline-danger {
+  @apply border-2 border-danger text-danger hover:bg-danger hover:text-white font-medium py-3 px-5 rounded-lg transition-all duration-300 flex items-center justify-center gap-2;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-outline-danger:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-outline-danger:active {
+  transform: translateY(0);
+}
+
+/* Badge styling */
+.badge {
+  @apply font-semibold text-xs uppercase tracking-wider py-2 px-3;
+  box-shadow: var(--shadow-sm);
+}
+
+.badge-pill {
+  @apply rounded-full;
+}
+
+.bg-danger {
+  background-color: var(--danger-color);
+}
+
+.bg-success {
+  background-color: var(--success-color);
+}
+
+/* Trend badges */
+.trend-badge {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--gray-color);
+  box-shadow: var(--shadow-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.trend-up {
+  background-color: rgba(56, 161, 105, 0.1);
+  color: var(--success-color);
+}
+
+.trend-down {
+  background-color: rgba(229, 62, 62, 0.1);
+  color: var(--danger-color);
+}
+
+/* Loading state */
+.dashboard-loading {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.dashboard-loading h4 {
+  margin-top: var(--space-4);
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.dashboard-loading p {
+  color: var(--gray-color);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .dashboard h1 {
+    @apply text-2xl;
+  }
+
+  .stats-card .value {
+    @apply text-2xl;
+  }
+
+  .stats-card .icon {
+    @apply text-3xl;
+  }
+
+  .alert-header {
+    @apply flex-col items-start;
+  }
+
+  .alert-header h5 {
+    @apply mb-2;
+  }
+
+  .transaction-table th,
+  .transaction-table td {
+    @apply py-3 px-4;
+  }
+
+  .btn-primary,
+  .btn-outline-danger {
+    @apply py-2 px-4;
+  }
+}
+
+/* Time Range Filter Styles */
+.time-range-filter .dropdown-toggle {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.time-range-filter .dropdown-menu {
+  padding: 0.5rem 0;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+  border: none;
+  min-width: 200px;
+}
+
+.time-range-filter .dropdown-header {
+  font-weight: 600;
+  color: var(--primary-color);
+  padding: 0.5rem 1rem;
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.time-range-filter .dropdown-item {
+  padding: 0.6rem 1rem;
+  transition: all 0.2s ease;
+}
+
+.time-range-filter .dropdown-item.active {
+  background-color: rgba(var(--primary-rgb), 0.1);
+  color: var(--primary-color);
+}
+
+.custom-date-modal .modal-header {
+  background: linear-gradient(to right, var(--primary-color), var(--dark-color));
+  color: white;
+}
+
+.custom-date-modal .modal-title {
+  display: flex;
+  align-items: center;
+}
+
+/* Transaction Detail Modal Styles */
+.transaction-detail-modal .modal-header {
+  background: linear-gradient(to right, var(--primary-color), var(--dark-color));
+  color: white;
+}
+
+.transaction-detail-modal .modal-title {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+}
+
+.transaction-detail-modal .status-alert {
+  margin-bottom: 1.5rem;
+  border-radius: 0.5rem;
+}
+
+.transaction-detail-modal .status-icon {
+  font-size: 1.5rem;
+}
+
+.transaction-detail-modal .detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.transaction-detail-modal .detail-item:last-child {
+  border-bottom: none;
+}
+
+.transaction-detail-modal .detail-label {
+  font-weight: 500;
+  color: var(--dark-color);
+  display: flex;
+  align-items: center;
+}
+
+.transaction-detail-modal .detail-value {
+  font-weight: 600;
+}
+
+.transaction-detail-modal .id-value {
+  font-family: monospace;
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.transaction-detail-modal .balance-table th,
+.transaction-detail-modal .balance-table td {
+  vertical-align: middle;
+}
+
+.transaction-detail-modal .risk-assessment {
+  background-color: rgba(0, 0, 0, 0.02);
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.transaction-detail-modal .risk-score-container {
+  margin-top: 0.75rem;
+}
+
+.transaction-detail-modal .risk-label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.transaction-detail-modal .risk-score {
+  height: 1.5rem;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.transaction-detail-modal .risk-indicator {
+  height: 100%;
+  border-radius: 1rem;
+  transition: width 1s ease-out;
+}
+
+.transaction-detail-modal .risk-score span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-weight: 600;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+  font-size: 0.85rem;
+}
+
+.transaction-detail-modal .shap-explanation {
+  margin-top: 1rem;
+}
+
+.transaction-detail-modal .shap-item {
+  margin-bottom: 1rem;
+}
+
+.transaction-detail-modal .shap-feature {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+
+.transaction-detail-modal .feature-name {
+  font-weight: 500;
+}
+
+.transaction-detail-modal .feature-value {
+  font-family: monospace;
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 0.1rem 0.3rem;
+  border-radius: 0.25rem;
+  font-size: 0.8rem;
+}
+
+.transaction-detail-modal .shap-impact-container {
+  height: 1.25rem;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 0.25rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.transaction-detail-modal .shap-bar {
+  height: 100%;
+  border-radius: 0.25rem;
+}
+
+.transaction-detail-modal .shap-positive {
+  background-color: rgba(40, 167, 69, 0.6);
+}
+
+.transaction-detail-modal .shap-negative {
+  background-color: rgba(220, 53, 69, 0.6);
+}
+
+.transaction-detail-modal .impact-value {
+  position: absolute;
+  right: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* RBAC Modal Styles */
+.rbac-modal .modal-header {
+  background: linear-gradient(to right, var(--primary-color), var(--dark-color));
+  color: white;
+}
+
+.rbac-modal .modal-title {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+}
+
+.rbac-modal .form-check-input:checked {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+/* Hidden download link for CSV export */
+.hidden-download-link {
+  display: none;
+}
+
+/* Chart export button styles */
+.chart-export-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 10;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.chart-export-btn:hover {
+  opacity: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .time-range-filter .btn {
+    padding: 0.375rem 0.5rem;
+    font-size: 0.875rem;
+  }
+  
+  .transaction-detail-modal .modal-body {
+    padding: 1rem;
+  }
+  
+  .transaction-detail-modal .detail-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .transaction-detail-modal .detail-value {
+    margin-top: 0.25rem;
+    width: 100%;
+  }
+}

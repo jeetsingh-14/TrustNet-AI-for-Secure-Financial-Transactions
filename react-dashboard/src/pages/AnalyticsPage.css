@@ -1,0 +1,264 @@
+/* AnalyticsPage.css - Styles for the analytics page */
+
+.analytics-page h1 {
+  color: var(--primary-color);
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+/* Metric cards */
+.metric-card {
+  height: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.metric-card .card-body {
+  display: flex;
+  padding: 1.5rem;
+}
+
+.metric-icon {
+  font-size: 2.5rem;
+  margin-right: 1.5rem;
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+}
+
+.metric-content {
+  flex: 1;
+}
+
+.metric-content h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: var(--gray-color);
+}
+
+.metric-value {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  color: var(--primary-color);
+}
+
+.metric-label {
+  font-size: 0.9rem;
+  color: var(--gray-color);
+  margin-bottom: 0.5rem;
+}
+
+.metric-secondary {
+  font-size: 0.9rem;
+  color: var(--dark-color);
+}
+
+/* Date filter */
+.date-filter {
+  background-color: #f8f9fa;
+  padding: 0.75rem;
+  border-radius: 8px;
+}
+
+/* Charts */
+.pie-chart-container {
+  height: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fraud-rate-label {
+  font-size: 1rem;
+  color: var(--gray-color);
+}
+
+.fraud-rate-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.feature-explanation {
+  font-size: 0.9rem;
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 4px;
+}
+
+/* Risk score in alerts table */
+.alerts-table .risk-score {
+  position: relative;
+  height: 20px;
+  background-color: #f1f1f1;
+  border-radius: 10px;
+  overflow: hidden;
+  width: 100%;
+  min-width: 100px;
+}
+
+.alerts-table .risk-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 10px;
+  background-color: var(--danger-color);
+  transition: width 0.3s ease;
+}
+
+.alerts-table .risk-score span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #333;
+  text-shadow: 0 0 2px rgba(255, 255, 255, 0.8);
+}
+
+/* LIME Explanation */
+.fraud-example-header {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1rem;
+}
+
+.fraud-example-details {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.explanation-intro {
+  background-color: #f8f9fa;
+  padding: 0.75rem;
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+.shap-explanation {
+  margin-top: 1.5rem;
+}
+
+.shap-item {
+  margin-bottom: 1.25rem;
+}
+
+.shap-feature {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+
+.feature-name {
+  font-weight: 600;
+}
+
+.feature-value {
+  color: var(--gray-color);
+  font-size: 0.9rem;
+}
+
+.shap-impact-container {
+  position: relative;
+  height: 25px;
+  background-color: #f1f1f1;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.shap-bar {
+  height: 100%;
+  border-radius: 4px;
+}
+
+.shap-positive {
+  background-color: rgba(75, 192, 192, 0.6);
+}
+
+.shap-negative {
+  background-color: rgba(255, 99, 132, 0.6);
+}
+
+.impact-value {
+  position: absolute;
+  right: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.explanation-footer {
+  background-color: #f8f9fa;
+  padding: 0.75rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+/* Chart container for model evaluation */
+.chart-container {
+  height: 300px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .analytics-page h1 {
+    font-size: 1.75rem;
+  }
+
+  .date-filter {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .date-filter .form-group {
+    margin-bottom: 0.5rem;
+  }
+
+  .date-filter span {
+    display: none;
+  }
+
+  .metric-card .card-body {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .metric-icon {
+    margin-right: 0;
+    margin-bottom: 1rem;
+    width: 100%;
+  }
+
+  .metric-value {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .d-flex.justify-content-between.align-items-center.mb-4 {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+
+  .date-filter {
+    margin-top: 1rem;
+    width: 100%;
+  }
+}

@@ -1,0 +1,142 @@
+/* FraudHeatmap.css - Styles for the fraud heatmap component */
+
+.fraud-heatmap-card {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.fraud-heatmap-card .card-header {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+  color: white;
+  border-bottom: none;
+  padding: 1rem 1.5rem;
+}
+
+.fraud-map-container {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom markers */
+.custom-marker {
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+}
+
+.custom-marker div {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.low-risk div {
+  background-color: rgba(40, 167, 69, 0.8);
+  border: 2px solid rgba(40, 167, 69, 1);
+}
+
+.medium-risk div {
+  background-color: rgba(255, 193, 7, 0.8);
+  border: 2px solid rgba(255, 193, 7, 1);
+}
+
+.high-risk div {
+  background-color: rgba(220, 53, 69, 0.8);
+  border: 2px solid rgba(220, 53, 69, 1);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+}
+
+/* Stats below the map */
+.fraud-map-stat {
+  text-align: center;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  flex: 1;
+  margin: 0 0.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.fraud-map-stat:first-child {
+  margin-left: 0;
+}
+
+.fraud-map-stat:last-child {
+  margin-right: 0;
+}
+
+.fraud-map-stat:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stat-value {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 0.25rem;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+
+/* Popup styling */
+.leaflet-popup-content {
+  margin: 0.75rem;
+}
+
+.leaflet-popup-content h6 {
+  margin-bottom: 0.5rem;
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.leaflet-popup-content p {
+  margin-bottom: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .fraud-map-stat {
+    padding: 0.75rem;
+    margin: 0 0.25rem;
+  }
+  
+  .stat-value {
+    font-size: 1.25rem;
+  }
+  
+  .stat-label {
+    font-size: 0.75rem;
+  }
+}
