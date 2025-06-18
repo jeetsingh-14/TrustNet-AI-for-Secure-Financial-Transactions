@@ -1,0 +1,42 @@
+/* Pagination.css - Standardized pagination styles for TrustNet AI */
+
+.trustnet-pagination {
+  margin-bottom: 0;
+}
+
+.trustnet-pagination .page-item .page-link {
+  color: var(--primary-color);
+  border-color: #dee2e6;
+  background-color: #fff;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.trustnet-pagination .page-item .page-link:hover {
+  background-color: #f8f9fa;
+  color: var(--primary-color);
+  border-color: #dee2e6;
+  z-index: 1;
+}
+
+.trustnet-pagination .page-item.active .page-link {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.trustnet-pagination .page-item.disabled .page-link {
+  color: #6c757d;
+  pointer-events: none;
+  background-color: #fff;
+  border-color: #dee2e6;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .trustnet-pagination .page-link {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+  }
+}

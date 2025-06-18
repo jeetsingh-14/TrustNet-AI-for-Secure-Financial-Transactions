@@ -1,0 +1,51 @@
+# Python virtual environments
+.venv/
+venv/
+
+# Node.js dependencies
+node_modules/
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# VS Code settings
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment variables and local configs
+.env
+.env.*
+
+# Log and cache
+*.log
+.cache/
+
+# Build & dist
+build/
+dist/
+
+# SQLite or DB files
+*.sqlite3
+trustnet.db
+
+# Temporary files
+*.tmp
+*.bak
+
+# Test output
+coverage/
+*.cover
+*.pyc
+
+# React build artifacts
+react-dashboard/build/
+
+# Package lock
+yarn.lock
+package-lock.json

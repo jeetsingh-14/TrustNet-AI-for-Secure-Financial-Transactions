@@ -1,0 +1,24 @@
+/* ChartContainer.css - Standardized chart container styles for TrustNet AI */
+
+.chart-container-card {
+  margin-bottom: 20px;
+}
+
+.chart-container {
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .chart-container {
+    height: 250px !important; /* Override inline style for mobile */
+  }
+}
+
+@media (max-width: 576px) {
+  .chart-container {
+    height: 200px !important; /* Override inline style for small mobile */
+  }
+}
