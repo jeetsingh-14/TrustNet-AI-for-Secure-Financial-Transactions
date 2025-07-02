@@ -1,0 +1,128 @@
+/* ChartCard.css - Styles for the Chart Card component */
+
+.chart-card {
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  border: 1px solid var(--border, #E2E8F0);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+
+.chart-card:hover {
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.chart-card-header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border, #E2E8F0);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+}
+
+.chart-card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--dark, #1E293B);
+  margin: 0;
+}
+
+.chart-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.chart-card-body {
+  padding: 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-card-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border, #E2E8F0);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+  color: var(--gray, #64748B);
+  background-color: var(--neutral, #F1F5F9);
+}
+
+.chart-export-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.375rem;
+  background-color: white;
+  border: 1px solid var(--border, #E2E8F0);
+  color: var(--dark, #1E293B);
+  transition: all 0.2s ease;
+}
+
+.chart-export-btn:hover {
+  background-color: var(--neutral, #F1F5F9);
+  border-color: var(--gray, #64748B);
+}
+
+/* Time range buttons */
+.time-range-btn {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  background-color: white;
+  border: 1px solid var(--border, #E2E8F0);
+  color: var(--dark, #1E293B);
+  transition: all 0.2s ease;
+}
+
+.time-range-btn.active {
+  background-color: var(--primary, #2563EB);
+  border-color: var(--primary, #2563EB);
+  color: white;
+}
+
+.time-range-btn:hover:not(.active) {
+  background-color: var(--neutral, #F1F5F9);
+  border-color: var(--gray, #64748B);
+}
+
+.time-range-group {
+  display: flex;
+  gap: 0.25rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .chart-card-header {
+    padding: 0.75rem 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .chart-card-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+  
+  .chart-card-body {
+    padding: 1rem;
+  }
+  
+  .chart-card-footer {
+    padding: 0.75rem 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}

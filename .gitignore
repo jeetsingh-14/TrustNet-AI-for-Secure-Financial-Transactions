@@ -32,7 +32,8 @@ dist/
 
 # SQLite or DB files
 *.sqlite3
-Data/trustnet.db
+trustnet.db
+data/trustnet.db
 
 # Temporary files
 *.tmp
@@ -48,4 +49,5 @@ react-dashboard/build/
 
 # Package lock
 yarn.lock
+react-dashboard/package-lock.json
 package-lock.json

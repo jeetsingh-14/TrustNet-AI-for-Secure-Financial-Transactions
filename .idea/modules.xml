@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/TrustNet AI for Secure Financial Transactions.iml" filepath="$PROJECT_DIR$/.idea/TrustNet AI for Secure Financial Transactions.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/TrustNet.iml" filepath="$PROJECT_DIR$/.idea/TrustNet.iml" />
     </modules>
   </component>
