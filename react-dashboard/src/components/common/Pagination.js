@@ -1,5 +1,6 @@
 import React from 'react';
 import { Pagination as BootstrapPagination, Form, Dropdown } from 'react-bootstrap';
+import { Pagination as BootstrapPagination } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import './Pagination.css';
 
@@ -22,6 +23,7 @@ const Pagination = ({
   itemsPerPage = 10,
   onPageChange,
   onItemsPerPageChange,
+  onPageChange,
   className = '' 
 }) => {
   const items = [];
@@ -121,6 +123,10 @@ const Pagination = ({
         </div>
       )}
     </div>
+  return (
+    <BootstrapPagination className={`trustnet-pagination ${className}`}>
+      {items}
+    </BootstrapPagination>
   );
 };
 
@@ -131,6 +137,12 @@ Pagination.propTypes = {
   itemsPerPage: PropTypes.number,
   onPageChange: PropTypes.func.isRequired,
   onItemsPerPageChange: PropTypes.func,
+  className: PropTypes.string
+};
+
+export default Pagination;
+
+  onPageChange: PropTypes.func.isRequired,
   className: PropTypes.string
 };
 

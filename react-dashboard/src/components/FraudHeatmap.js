@@ -28,13 +28,17 @@ L.Marker.prototype.options.icon = DefaultIcon;
 const generateMockFraudData = (count = 100) => {
   const fraudTypes = ['PAYMENT', 'TRANSFER', 'CASH_OUT', 'DEBIT'];
   const riskLevels = ['low', 'medium', 'high'];
-
   return Array.from({ length: count }, (_, i) => {
     const isFraud = Math.random() > 0.7; // 30% chance of fraud
     const riskLevel = isFraud 
       ? (Math.random() > 0.5 ? 'high' : 'medium')
       : (Math.random() > 0.7 ? 'medium' : 'low');
 
+
+    // Generate random dates within the last 30 days
+    const date = new Date();
+    date.setDate(date.getDate() - Math.floor(Math.random() * 30));
+    
     // Generate random dates within the last 30 days
     const date = new Date();
     date.setDate(date.getDate() - Math.floor(Math.random() * 30));
@@ -61,6 +65,11 @@ const HeatmapLayer = ({ points }) => {
   useEffect(() => {
     if (!points.length) return;
 
+
+  
+  useEffect(() => {
+    if (!points.length) return;
+
     // Convert points to format expected by Leaflet.heat
     const heatPoints = points.map(p => [
       p.lat, 
@@ -73,15 +82,20 @@ const HeatmapLayer = ({ points }) => {
       radius: 25,
       blur: 15,
       maxZoom: 10,
+
       gradient: { 0.4: '#A7F3D0', 0.6: '#6EE7B7', 0.8: '#34D399', 1.0: '#10B981' }
     }).addTo(map);
+
+
+      gradient: { 0.4: 'blue', 0.6: 'yellow', 0.8: 'orange', 1.0: 'red' }
+    }).addTo(map);
+    
 
     // Cleanup
     return () => {
       map.removeLayer(heat);
     };
   }, [map, points]);
-
   return null;
 };
 
@@ -96,8 +110,17 @@ const FraudHeatmap = () => {
     riskLevel: 'all'
   });
 
+
   const mapRef = useRef(null);
 
+  // Load fraud data
+  useEffect(() => {
+    setLoading(true);
+
+
+  
+  const mapRef = useRef(null);
+  
   // Load fraud data
   useEffect(() => {
     setLoading(true);
@@ -125,6 +148,14 @@ const FraudHeatmap = () => {
     return dateInRange && typeMatches && riskMatches;
   });
 
+   
+    const dateInRange = itemDate >= startDate && itemDate <= endDate;
+    const typeMatches = filters.fraudType === 'all' || item.transactionType === filters.fraudType;
+    const riskMatches = filters.riskLevel === 'all' || item.riskLevel === filters.riskLevel;
+    
+    return dateInRange && typeMatches && riskMatches;
+  });
+
   // Handle filter changes
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
@@ -149,7 +180,9 @@ const FraudHeatmap = () => {
       <Card className="mb-4 fraud-heatmap-card">
         <Card.Header className="d-flex justify-content-between align-items-center">
           <div className="d-flex align-items-center">
+
             <FaMapMarkedAlt className="me-2 text-success" />
+            <FaMapMarkedAlt className="me-2 text-primary" />
             <h5 className="mb-0">Fraud Risk Heatmap</h5>
           </div>
           <div>
@@ -163,7 +196,6 @@ const FraudHeatmap = () => {
             />
           </div>
         </Card.Header>
-
         <Card.Body>
           {/* Filters */}
           <div className="mb-4 p-3 bg-light rounded">
@@ -223,7 +255,11 @@ const FraudHeatmap = () => {
               </Col>
               <Col md={2}>
                 <Button 
+
                   variant="success" 
+
+                  variant="primary" 
+
                   className="w-100"
                   onClick={applyFilters}
                 >
@@ -238,6 +274,9 @@ const FraudHeatmap = () => {
             {loading ? (
               <div className="text-center p-5">
                 <div className="spinner-border text-success" role="status">
+
+                <div className="spinner-border text-primary" role="status">
+
                   <span className="visually-hidden">Loading...</span>
                 </div>
                 <p className="mt-3">Loading fraud data...</p>
@@ -319,4 +358,8 @@ const FraudHeatmap = () => {
   );
 };
 
+
 export default FraudHeatmap;
+
+export default FraudHeatmap;
+

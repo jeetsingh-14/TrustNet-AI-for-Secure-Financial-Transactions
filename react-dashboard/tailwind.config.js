@@ -30,6 +30,25 @@ module.exports = {
           700: '#374151',
           800: '#1F2937',
           900: '#111827',
+        primary: '#000000',
+        'primary-light': '#7f0000',
+        secondary: '#3182ce',
+        'secondary-light': '#63b3ed',
+        success: '#38a169',
+        danger: '#e53e3e',
+        warning: '#dd6b20',
+        light: '#f7fafc',
+        dark: '#1a202c',
+        gray: {
+          100: '#f7fafc',
+          200: '#edf2f7',
+          300: '#e2e8f0',
+          400: '#cbd5e0',
+          500: '#a0aec0',
+          600: '#718096',
+          700: '#4a5568',
+          800: '#2d3748',
+          900: '#1a202c',
         },
       },
       boxShadow: {
@@ -60,6 +79,7 @@ module.exports = {
         'fade-in': 'fadeIn 0.5s ease-out',
         'scale-in': 'scaleIn 0.5s ease-out',
         'rotate-in': 'rotateIn 0.5s ease-out',
+
       },
       keyframes: {
         shimmer: {
@@ -69,6 +89,7 @@ module.exports = {
           '0%, 100%': { opacity: 1 },
           '50%': { opacity: 0.5 },
         },
+
         float: {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-10px)' },
@@ -105,6 +126,7 @@ module.exports = {
           '0%': { transform: 'rotate(-5deg) scale(0.9)', opacity: 0 },
           '100%': { transform: 'rotate(0) scale(1)', opacity: 1 },
         },
+
       },
       spacing: {
         '1': '0.25rem',

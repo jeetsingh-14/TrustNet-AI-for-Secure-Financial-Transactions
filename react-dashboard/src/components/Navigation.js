@@ -1,5 +1,10 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Navbar, Nav, Dropdown, Badge, Button } from 'react-bootstrap';
+
+import React, { useState, useEffect } from 'react';
+import { Navbar, Nav, Dropdown, Badge } from 'react-bootstrap';
+
 import { Link } from 'react-router-dom';
 import { Tooltip } from 'react-tooltip';
 import { 
@@ -10,6 +15,7 @@ import {
   FaQuestionCircle,
   FaMoon,
   FaSun,
+
   FaUserShield,
   FaCircle,
   FaClock,
@@ -23,11 +29,21 @@ import './Navigation.css';
 
 const Navigation = ({ backendConnected = true, backendUrl = config.backend.url }) => {
   const [currentTheme, setCurrentTheme] = useState('light');
+
+} from 'react-icons/fa';
+import { motion, AnimatePresence } from 'framer-motion';
+import { toast } from 'react-hot-toast';
+import './Navigation.css';
+
+const Navigation = () => {
+  const [darkMode, setDarkMode] = useState(false);
+
   const [notifications, setNotifications] = useState([
     { id: 1, text: "New fraud alert detected", time: "5 minutes ago", read: false },
     { id: 2, text: "System update completed", time: "1 hour ago", read: false },
     { id: 3, text: "Weekly security report available", time: "1 day ago", read: true }
   ]);
+
 
   // Available themes
   const themes = [
@@ -108,6 +124,21 @@ const Navigation = ({ backendConnected = true, backendUrl = config.backend.url }
   const changeTheme = (themeId) => {
     setCurrentTheme(themeId);
     toast.success(`${themeId.charAt(0).toUpperCase() + themeId.slice(1)} theme activated`);
+
+  // Effect to apply dark mode to the document
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+  }, [darkMode]);
+
+  const toggleDarkMode = () => {
+    const newMode = !darkMode;
+    setDarkMode(newMode);
+    toast.success(`${newMode ? 'Dark' : 'Light'} mode activated`);
+
   };
 
   const markAllNotificationsAsRead = () => {
@@ -127,6 +158,8 @@ const Navigation = ({ backendConnected = true, backendUrl = config.backend.url }
 
   return (
     <Navbar variant="light" className={`navbar-custom glass-navbar ${currentTheme === 'dark' ? 'dark-mode' : ''}`}>
+  return (
+    <Navbar variant="dark" className={`navbar-custom ${darkMode ? 'dark-mode' : ''}`}>
       <div className="navbar-content">
         {/* Left section - Logo */}
         <Navbar.Brand as={Link} to="/" className="d-flex align-items-center">
@@ -147,6 +180,7 @@ const Navigation = ({ backendConnected = true, backendUrl = config.backend.url }
         {/* Right section - utility icons with flex-end alignment */}
         <Nav className="navbar-items">
           {/* Backend Connection Status */}
+          {/* System Status */}
           <motion.div 
             className="status-container"
             initial={{ opacity: 0 }}
@@ -229,6 +263,27 @@ const Navigation = ({ backendConnected = true, backendUrl = config.backend.url }
               ))}
             </Dropdown.Menu>
           </Dropdown>
+            data-tooltip-id="status-tooltip"
+            data-tooltip-content="System is online and operational"
+          >
+            <div className="status-indicator me-2"></div>
+            <span className="d-none d-md-inline">System Status: <span className="status-text font-semibold">Online</span></span>
+          </motion.div>
+          <Tooltip id="status-tooltip" place="bottom" />
+
+          {/* Dark Mode Toggle */}
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={toggleDarkMode}
+            className="theme-toggle-btn"
+            aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+            data-tooltip-id="theme-tooltip"
+            data-tooltip-content={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+          >
+            {darkMode ? <FaSun className="text-warning" /> : <FaMoon />}
+          </motion.button>
+          <Tooltip id="theme-tooltip" place="bottom" />
 
           {/* Notifications Dropdown */}
           <Dropdown align="end">

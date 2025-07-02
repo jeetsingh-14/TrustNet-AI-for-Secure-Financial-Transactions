@@ -519,6 +519,8 @@ const AnalyticsPage = () => {
         <div className="flex flex-wrap items-end space-x-4 px-6">
           <div className="flex flex-col">
             <label className="text-sm text-gray-600 mb-1">From</label>
+        <div className="date-filter d-flex align-items-center">
+          <Form.Group className="me-2">
             <Form.Control
               type="date"
               name="startDate"
@@ -529,6 +531,10 @@ const AnalyticsPage = () => {
           </div>
           <div className="flex flex-col">
             <label className="text-sm text-gray-600 mb-1">To</label>
+            />
+          </Form.Group>
+          <span className="mx-2">to</span>
+          <Form.Group className="me-2">
             <Form.Control
               type="date"
               name="endDate"
@@ -542,6 +548,13 @@ const AnalyticsPage = () => {
             onClick={applyDateFilter}
           >
             🔍 Apply
+            />
+          </Form.Group>
+          <Button 
+            variant="primary"
+            onClick={applyDateFilter}
+          >
+            <FaFilter className="me-1" /> Apply
           </Button>
         </div>
       </div>
@@ -576,6 +589,62 @@ const AnalyticsPage = () => {
           subtitle="Based on recent validation data" 
         />
       </div>
+
+      <Row className="mb-4">
+        <Col md={4}>
+          <Card className="metric-card">
+            <Card.Body>
+              <div className="metric-icon">
+                <FaChartBar />
+              </div>
+              <div className="metric-content">
+                <h3>Transaction Volume</h3>
+                <div className="metric-value">{metrics.totalTransactions.toLocaleString()}</div>
+                <div className="metric-label">Total Transactions</div>
+                <div className="metric-secondary">
+                  <span className="text-danger">{metrics.fraudulentTransactions.toLocaleString()}</span> Fraudulent ({metrics.fraudRate.toFixed(2)}%)
+                </div>
+              </div>
+            </Card.Body>
+          </Card>
+        </Col>
+
+        <Col md={4}>
+          <Card className="metric-card">
+            <Card.Body>
+              <div className="metric-icon">
+                <FaChartLine />
+              </div>
+              <div className="metric-content">
+                <h3>Fraud Probability</h3>
+                <div className="metric-value">{(metrics.averageFraudProbability * 100).toFixed(2)}%</div>
+                <div className="metric-label">Average for Flagged Transactions</div>
+                <div className="metric-secondary">
+                  Based on {metrics.fraudulentTransactions.toLocaleString()} fraudulent transactions
+                </div>
+              </div>
+            </Card.Body>
+          </Card>
+        </Col>
+
+        <Col md={4}>
+          <Card className="metric-card">
+            <Card.Body>
+              <div className="metric-icon">
+                <FaChartPie />
+              </div>
+              <div className="metric-content">
+                <h3>Transaction Amount</h3>
+                <div className="metric-value">${metrics.totalAmount.toLocaleString()}</div>
+                <div className="metric-label">Total Amount</div>
+                <div className="metric-secondary">
+                  <span className="text-danger">${metrics.fraudAmount.toLocaleString()}</span> in Fraudulent Transactions
+                </div>
+              </div>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
 
       {/* Charts */}
       <Row className="mb-4">

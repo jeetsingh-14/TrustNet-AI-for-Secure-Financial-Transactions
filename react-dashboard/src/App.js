@@ -17,6 +17,9 @@ function App() {
   const [backendConnected, setBackendConnected] = useState(true);
   const [backendUrl, setBackendUrl] = useState(config.backend.url);
 
+function App() {
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+
   useEffect(() => {
     const savedState = localStorage.getItem('sidebarCollapsed');
     if (savedState !== null) {
@@ -57,6 +60,9 @@ function App() {
     return () => clearInterval(intervalId);
   }, [backendUrl]);
 
+  }, []);
+
+
   const handleSidebarCollapse = (collapsed) => {
     setIsSidebarCollapsed(collapsed);
   };
@@ -64,6 +70,7 @@ function App() {
   return (
     <Router>
       <div className="App">
+    
         <div className="app-layout">
           {/* Fixed Sidebar */}
           <div className="app-sidebar">
@@ -93,6 +100,21 @@ function App() {
                 </Routes>
               </div>
             </div>
+          </div>
+        </div>
+
+
+        <Navigation />
+        <Sidebar onCollapse={handleSidebarCollapse} initialCollapsed={isSidebarCollapsed} />
+        <div className={`content-with-sidebar ${isSidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
+          <div className="content-container">
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/transactions" element={<TransactionsPage />} />
+              <Route path="/transactions/:id" element={<TransactionDetail />} />
+              <Route path="/analytics" element={<AnalyticsPage />} />
+            </Routes>
           </div>
         </div>
 

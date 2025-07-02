@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Row, Col, Card, Table, Badge, Alert, Button, OverlayTrigger, Tooltip as BSTooltip, Spinner, Dropdown } from 'react-bootstrap';
+import React, { useState, useEffect, useCallback, lazy, Suspense, useRef } from 'react';
+import { Row, Col, Card, Table, Badge, Alert, Button, OverlayTrigger, Tooltip as BSTooltip, Spinner, Dropdown, Modal } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { 
   FaExchangeAlt, 
@@ -10,11 +12,17 @@ import {
   FaShieldAlt,
   FaArrowRight,
   FaSync,
+
+  FaDownload,
+  FaCalendarAlt,
   FaFilter,
   FaArrowUp,
   FaArrowDown,
   FaInfoCircle,
   FaClock,
+  FaChartPie,
+  FaChartArea,
+  FaEllipsisV,
   FaMapMarkedAlt,
   FaImage,
   FaFileExport,
@@ -31,6 +39,15 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 import { motion } from 'framer-motion';
 import { getTransactions, getAlerts, getStats, getDashboardData } from '../services/api';
 import { CSVLink } from 'react-csv';
+  FaUserCog
+} from 'react-icons/fa';
+import { Bar, Pie, Line } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement, PointElement, LineElement, Filler } from 'chart.js';
+import { motion, AnimatePresence } from 'framer-motion';
+import { getTransactions, getAlerts, getStats, getDashboardData } from '../services/api';
+import { CSVLink } from 'react-csv';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 import { toast } from 'react-hot-toast';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { HeatmapLayer } from 'react-leaflet-heatmap-layer-v3';
@@ -52,6 +69,9 @@ import {
   BackendStatus,
   KPICard 
 } from '../components/common';
+
+import TimeRangeFilter from '../components/TimeRangeFilter';
+import RoleBasedAccessControlModal from '../components/RoleBasedAccessControlModal';
 
 
 // Fix Leaflet's default icon issue
@@ -379,6 +399,9 @@ const Dashboard = () => {
         '7d': 'last 7 days',
         '30d': 'last 30 days',
         '90d': 'last 90 days'
+        '24h': 'last 24 hours',
+        '7days': 'last 7 days',
+        '30days': 'last 30 days'
       }[range] || range;
     }
 
@@ -613,6 +636,9 @@ const Dashboard = () => {
         className="dashboard-header"
       >
         <div className="dashboard-title">
+        className="d-flex justify-content-between align-items-center mb-4"
+      >
+        <div className="d-flex align-items-center">
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -650,6 +676,59 @@ const Dashboard = () => {
             />
           </ToolbarGroup>
         </Toolbar>
+            className="me-3"
+          >
+            <FaShieldAlt style={{ fontSize: '2rem', color: 'var(--primary-color)' }} />
+          </motion.div>
+          <h1 className="mb-0">TrustNet AI Dashboard</h1>
+        </div>
+
+        <div className="d-flex">
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Button 
+              variant="outline-primary" 
+              className="me-2 d-flex align-items-center"
+              onClick={() => setShowRbacModal(true)}
+            >
+              <FaUserShield className="me-2" />
+              Access Control
+            </Button>
+          </motion.div>
+
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Button 
+              variant="primary" 
+              className="d-flex align-items-center"
+              onClick={refreshDashboard}
+              disabled={refreshing}
+            >
+              {refreshing ? (
+                <>
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                    className="me-2"
+                  />
+                  Refreshing...
+                </>
+              ) : (
+                <>
+                  <FaSync className="me-2" />
+                  Refresh
+                </>
+              )}
+            </Button>
+          </motion.div>
+        </div>
       </motion.div>
 
       {usingMockData && (
@@ -1074,6 +1153,280 @@ const Dashboard = () => {
       </Row>
 
       {/* Enhanced Fraud Heatmap */}
+
+      {/* Stats Cards */}
+      <Row className="mb-4">
+        {[
+          {
+            icon: FaExchangeAlt,
+            value: stats.totalTransactions,
+            label: "Total Transactions",
+            color: "primary"
+          },
+          {
+            icon: FaExclamationTriangle,
+            value: stats.fraudulentTransactions,
+            label: "Fraudulent Transactions",
+            color: "danger"
+          },
+          {
+            icon: FaMoneyBillWave,
+            value: `$${stats.totalAmount.toLocaleString()}`,
+            label: "Total Amount",
+            color: "success"
+          },
+          {
+            icon: FaChartLine,
+            value: `${(stats.averageFraudProbability * 100).toFixed(2)}%`,
+            label: "Avg. Fraud Probability",
+            color: "warning"
+          }
+        ].map((stat, index) => (
+          <Col md={3} key={index}>
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                delay: index * 0.1,
+                duration: 0.5,
+                type: "spring",
+                stiffness: 100
+              }}
+              whileHover={{
+                y: -10,
+                transition: { duration: 0.2 }
+              }}
+            >
+              <Card className="stats-card">
+                <Card.Body>
+                  <motion.div
+                    className={`icon text-${stat.color}`}
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{
+                      delay: index * 0.1 + 0.3,
+                      type: "spring",
+                      stiffness: 200
+                    }}
+                  >
+                    <stat.icon />
+                  </motion.div>
+                  <motion.div
+                    className="value"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: index * 0.1 + 0.5 }}
+                  >
+                    {stat.value}
+                  </motion.div>
+                  <motion.div
+                    className="label"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: index * 0.1 + 0.6 }}
+                  >
+                    {stat.label}
+                  </motion.div>
+                </Card.Body>
+              </Card>
+            </motion.div>
+          </Col>
+        ))}
+      </Row>
+
+      {/* Charts */}
+      <Row className="mb-4">
+        {[
+          {
+            title: "Daily Transaction Volume",
+            chart: (
+              <Bar
+                data={dailyTransactionData}
+                options={{
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  plugins: {
+                    legend: {
+                      position: 'top',
+                      labels: {
+                        font: {
+                          family: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                          weight: 'bold'
+                        }
+                      }
+                    },
+                    title: {
+                      display: true,
+                      text: 'Daily Transaction Volume',
+                      font: {
+                        family: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                        size: 16,
+                        weight: 'bold'
+                      }
+                    }
+                  },
+                  animation: {
+                    duration: 2000,
+                    easing: 'easeOutQuart'
+                  }
+                }}
+              />
+            )
+          },
+          {
+            title: "Fraud Distribution",
+            chart: (
+              <Pie
+                data={fraudDistributionData}
+                options={{
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  plugins: {
+                    legend: {
+                      position: 'top',
+                      labels: {
+                        font: {
+                          family: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                          weight: 'bold'
+                        }
+                      }
+                    },
+                    title: {
+                      display: true,
+                      text: 'Fraud vs. Legitimate Transactions',
+                      font: {
+                        family: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                        size: 16,
+                        weight: 'bold'
+                      }
+                    }
+                  },
+                  animation: {
+                    duration: 2000,
+                    easing: 'easeOutQuart'
+                  }
+                }}
+              />
+            )
+          }
+        ].map((chartData, index) => (
+          <Col md={6} key={index}>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                delay: 0.3 + index * 0.2,
+                duration: 0.5,
+                type: "spring",
+                stiffness: 100
+              }}
+            >
+              <Card className="h-100 shadow-lg rounded-xl overflow-hidden">
+                <Card.Header className="bg-gradient-to-r from-primary to-dark text-white py-3 px-4 d-flex justify-content-between align-items-center">
+                  <h5 className="m-0 font-bold">{chartData.title}</h5>
+                  <div className="d-flex">
+                    <Button 
+                      variant="light" 
+                      size="sm" 
+                      className="d-flex align-items-center"
+                      onClick={() => exportChartAsImage(
+                        index === 0 ? chartRefs.dailyTransactions : chartRefs.fraudDistribution,
+                        chartData.title
+                      )}
+                      disabled={!permissions.exportData}
+                      title={permissions.exportData ? "Export as image" : "You don't have permission to export data"}
+                    >
+                      <FaImage className="me-1" size={14} />
+                      <span className="d-none d-md-inline">Export</span>
+                    </Button>
+                  </div>
+                </Card.Header>
+                <Card.Body className="p-4">
+                  <motion.div 
+                    className="chart-container"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ 
+                      delay: 0.5 + index * 0.2,
+                      duration: 0.5
+                    }}
+                  >
+                    {index === 0 ? (
+                      <Bar
+                        ref={chartRefs.dailyTransactions}
+                        data={dailyTransactionData}
+                        options={{
+                          responsive: true,
+                          maintainAspectRatio: false,
+                          plugins: {
+                            legend: {
+                              position: 'top',
+                              labels: {
+                                font: {
+                                  family: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                                  weight: 'bold'
+                                }
+                              }
+                            },
+                            title: {
+                              display: true,
+                              text: 'Daily Transaction Volume',
+                              font: {
+                                family: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                                size: 16,
+                                weight: 'bold'
+                              }
+                            }
+                          },
+                          animation: {
+                            duration: 2000,
+                            easing: 'easeOutQuart'
+                          }
+                        }}
+                      />
+                    ) : (
+                      <Pie
+                        ref={chartRefs.fraudDistribution}
+                        data={fraudDistributionData}
+                        options={{
+                          responsive: true,
+                          maintainAspectRatio: false,
+                          plugins: {
+                            legend: {
+                              position: 'top',
+                              labels: {
+                                font: {
+                                  family: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                                  weight: 'bold'
+                                }
+                              }
+                            },
+                            title: {
+                              display: true,
+                              text: 'Fraud vs. Legitimate Transactions',
+                              font: {
+                                family: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                                size: 16,
+                                weight: 'bold'
+                              }
+                            }
+                          },
+                          animation: {
+                            duration: 2000,
+                            easing: 'easeOutQuart'
+                          }
+                        }}
+                      />
+                    )}
+                  </motion.div>
+                </Card.Body>
+              </Card>
+            </motion.div>
+          </Col>
+        ))}
+      </Row>
+
+      {/* Fraud Heatmap */}
       <Row className="mb-4">
         <Col md={12}>
           <motion.div
@@ -1081,6 +1434,7 @@ const Dashboard = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{
               delay: 0.7,
+              delay: 0.5,
               duration: 0.5,
               type: "spring",
               stiffness: 100
@@ -1090,6 +1444,10 @@ const Dashboard = () => {
               <Card.Header className="bg-gradient-to-r from-primary to-dark text-white py-3 px-4 d-flex justify-content-between align-items-center">
                 <div className="d-flex align-items-center">
                   <div className="bg-white bg-opacity-10 p-2 rounded-lg me-3">
+            <Card className="shadow-lg rounded-xl overflow-hidden">
+              <Card.Header className="bg-gradient-to-r from-primary to-dark text-white py-3 px-4 d-flex justify-content-between align-items-center">
+                <div className="d-flex align-items-center">
+                  <div className="bg-white bg-opacity-10 p-2 rounded-lg mr-3">
                     <FaMapMarkedAlt className="text-white" />
                   </div>
                   <h5 className="m-0 font-bold">Fraud Activity Heatmap</h5>
@@ -1136,6 +1494,21 @@ const Dashboard = () => {
                     center={[39.8283, -98.5795]} 
                     zoom={4} 
                     style={{ height: '550px', width: '100%' }}
+                <OverlayTrigger
+                  placement="top"
+                  overlay={<BSTooltip>Shows geographic distribution of fraudulent transaction activity</BSTooltip>}
+                >
+                  <div className="bg-white bg-opacity-10 p-2 rounded-circle">
+                    <FaInfoCircle className="text-white" />
+                  </div>
+                </OverlayTrigger>
+              </Card.Header>
+              <Card.Body className="p-0">
+                <div className="map-container">
+                  <MapContainer 
+                    center={[39.8283, -98.5795]} 
+                    zoom={4} 
+                    style={{ height: '500px', width: '100%' }}
                   >
                     <TileLayer
                       attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -1143,11 +1516,13 @@ const Dashboard = () => {
                     />
 
                     {/* Enhanced Heatmap Layer */}
+
                     <HeatmapLayer
                       points={heatmapData}
                       longitudeExtractor={m => m.lng}
                       latitudeExtractor={m => m.lat}
                       intensityExtractor={m => m.intensity}
+
                       radius={25}
                       max={1.0}
                       minOpacity={0.2}
@@ -1155,6 +1530,13 @@ const Dashboard = () => {
                       gradient={{
                         0.2: 'blue',
                         0.4: 'cyan',
+
+                      radius={20}
+                      max={1.0}
+                      minOpacity={0.1}
+                      blur={15}
+                      gradient={{
+                        0.4: 'blue',
                         0.6: 'lime',
                         0.8: 'yellow',
                         1.0: 'red'
@@ -1205,6 +1587,7 @@ const Dashboard = () => {
                         );
                       })
                     }
+
                   </MapContainer>
                 </div>
               </Card.Body>
@@ -1221,6 +1604,10 @@ const Dashboard = () => {
                     <span className="ms-1">High</span>
                   </div>
                 </div>
+                <small className="text-muted">
+                  <FaInfoCircle className="me-1" /> Heatmap shows intensity of fraudulent transactions across the United States. 
+                  Higher intensity (red) indicates areas with more fraud activity.
+                </small>
               </Card.Footer>
             </Card>
           </motion.div>
@@ -1231,6 +1618,11 @@ const Dashboard = () => {
       <Row className="mb-6">
         {/* Enhanced Transaction Table */}
         <Col lg={8} md={12} className="mb-4">
+
+      {/* Recent Transactions and Alerts */}
+      <Row className="mb-6">
+        {/* Recent Transactions */}
+        <Col lg={6} md={12} className="mb-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -1426,6 +1818,75 @@ const Dashboard = () => {
                             </div>
                           </th>
                           <th>Actions</th>
+            <Card className="h-100">
+              <Card.Header className="d-flex justify-content-between align-items-center">
+                <div className="d-flex align-items-center">
+                  <div className="bg-primary bg-opacity-10 p-2 rounded-lg mr-3">
+                    <FaExchangeAlt className="text-primary" />
+                  </div>
+                  <div>
+                    <h5 className="m-0 font-bold">Recent Transactions</h5>
+                    <small className="text-muted">Latest financial activities</small>
+                  </div>
+                </div>
+                <div className="d-flex align-items-center">
+                  {/* CSV Export Button */}
+                  <motion.div 
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="me-2"
+                  >
+                    <Button
+                      variant="outline-success"
+                      size="sm"
+                      className="d-flex align-items-center"
+                      onClick={prepareExportData}
+                      disabled={!permissions.exportData || recentTransactions.length === 0}
+                      title={!permissions.exportData ? "You don't have permission to export data" : 
+                             recentTransactions.length === 0 ? "No transactions to export" : 
+                             "Export transactions as CSV"}
+                    >
+                      <FaFileExport className="me-1" size={14} />
+                      <span className="d-none d-md-inline">CSV</span>
+                      {exportData.length > 0 && (
+                        <CSVLink
+                          data={exportData}
+                          filename={`transactions-${new Date().toISOString().split('T')[0]}.csv`}
+                          className="hidden-download-link"
+                          target="_blank"
+                          ref={(r) => setTimeout(() => {
+                            if (r && exportData.length > 0) {
+                              r.link.click();
+                              setExportData([]);
+                            }
+                          }, 100)}
+                        />
+                      )}
+                    </Button>
+                  </motion.div>
+
+                  {/* View All Button */}
+                  <motion.div 
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Link to="/transactions" className="btn btn-sm btn-light rounded-circle">
+                      <FaSearch />
+                    </Link>
+                  </motion.div>
+                </div>
+              </Card.Header>
+              <Card.Body className="p-0">
+                {recentTransactions.length > 0 ? (
+                  <div className="overflow-hidden">
+                    <Table hover responsive className="transaction-table mb-0">
+                      <thead>
+                        <tr>
+                          <th>Type</th>
+                          <th>Amount</th>
+                          <th>From</th>
+                          <th>To</th>
+                          <th>Status</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -1433,6 +1894,11 @@ const Dashboard = () => {
                           <motion.tr 
                             key={transaction.transaction_id} 
                             className={`enhanced-transaction-row ${transaction.is_fraud ? 'fraud-row' : ''}`}
+                            className="transaction-row"
+                            onClick={() => {
+                              setSelectedTransactionId(transaction.transaction_id);
+                              setShowTransactionModal(true);
+                            }}
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ 
@@ -1488,6 +1954,16 @@ const Dashboard = () => {
                               >
                                 Details
                               </Button>
+                            <td>{transaction.transaction_type}</td>
+                            <td className="font-medium">${transaction.amount.toLocaleString()}</td>
+                            <td>{transaction.name_orig}</td>
+                            <td>{transaction.name_dest}</td>
+                            <td>
+                              {transaction.is_fraud ? (
+                                <Badge bg="danger" className="badge badge-pill">Fraud</Badge>
+                              ) : (
+                                <Badge bg="success" className="badge badge-pill">Legitimate</Badge>
+                              )}
                             </td>
                           </motion.tr>
                         ))}
@@ -1538,6 +2014,16 @@ const Dashboard = () => {
                       </ul>
                     </nav>
                   </div>
+                <div className="text-end p-3 bg-light bg-opacity-50 border-top">
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="inline-block"
+                  >
+                    <Link to="/transactions" className="btn btn-primary btn-sm">
+                      View All Transactions <FaArrowRight className="ms-2" />
+                    </Link>
+                  </motion.div>
                 </div>
               </Card.Body>
             </Card>
@@ -1546,6 +2032,8 @@ const Dashboard = () => {
 
         {/* Fraud Alerts Panel (Right Side) */}
         <Col lg={4} md={12} className="mb-4">
+        {/* Recent Fraud Alerts */}
+        <Col lg={6} md={12} className="mb-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -1697,6 +2185,77 @@ const Dashboard = () => {
                         </motion.div>
                       );
                     })}
+            <Card className="h-100">
+              <Card.Header className="d-flex justify-content-between align-items-center">
+                <div className="d-flex align-items-center">
+                  <div className="bg-danger bg-opacity-10 p-2 rounded-lg mr-3">
+                    <FaExclamationTriangle className="text-danger" />
+                  </div>
+                  <div>
+                    <h5 className="m-0 font-bold">Recent Fraud Alerts</h5>
+                    <small className="text-muted">Security notifications</small>
+                  </div>
+                </div>
+                <motion.div 
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Link to="/analytics" className="btn btn-sm btn-light rounded-circle">
+                    <FaShieldAlt />
+                  </Link>
+                </motion.div>
+              </Card.Header>
+              <Card.Body className="p-4">
+                {recentAlerts.length > 0 ? (
+                  <div className="fraud-alerts">
+                    {recentAlerts.map((alert, index) => (
+                      <motion.div 
+                        key={alert.id} 
+                        className="fraud-alert-item"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ 
+                          delay: 0.9 + index * 0.1,
+                          duration: 0.3
+                        }}
+                      >
+                        <div className="alert-header">
+                          <h5 className="d-flex align-items-center">
+                            <span className="bg-danger bg-opacity-10 p-1 rounded-circle me-2">
+                              <FaExclamationTriangle className="text-danger" />
+                            </span>
+                            <span className="text-truncate">ID: {alert.transaction_id.substring(0, 10)}...</span>
+                          </h5>
+                          <Badge bg="danger" className="badge badge-pill">
+                            {(alert.fraud_probability * 100).toFixed(2)}% Risk
+                          </Badge>
+                        </div>
+                        <div className="alert-body">
+                          <p className="mb-2 text-gray-700">
+                            <strong>Time:</strong> {new Date(alert.timestamp).toLocaleString()}
+                          </p>
+                          <div className="d-flex justify-content-between align-items-center">
+                            <p className="mb-0 text-gray-700">
+                              <strong>Status:</strong> 
+                              <span className={alert.is_reviewed ? "text-success font-medium ms-1" : "text-warning font-medium ms-1"}>
+                                {alert.is_reviewed ? 'Reviewed' : 'Pending Review'}
+                              </span>
+                            </p>
+                            <motion.div
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.95 }}
+                            >
+                              <Link 
+                                to={`/transactions/${alert.transaction_id}`} 
+                                className="btn btn-outline-danger btn-sm"
+                              >
+                                View Details <FaArrowRight className="ms-2" />
+                              </Link>
+                            </motion.div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
                   </div>
                 ) : (
                   <div className="p-5 text-center">
@@ -1802,6 +2361,21 @@ const Dashboard = () => {
                   <FaInfoCircle className="me-1" /> These features are currently in development. Stay tuned for updates!
                 </p>
               </Card.Footer>
+                    <p className="text-gray-500 mb-0">No recent fraud alerts found.</p>
+                  </div>
+                )}
+                <div className="text-end mt-3 pt-3 border-top">
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="inline-block"
+                  >
+                    <Link to="/analytics" className="btn btn-primary btn-sm">
+                      View All Alerts <FaArrowRight className="ms-2" />
+                    </Link>
+                  </motion.div>
+                </div>
+              </Card.Body>
             </Card>
           </motion.div>
         </Col>

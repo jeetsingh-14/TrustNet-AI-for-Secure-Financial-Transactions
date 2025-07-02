@@ -14,6 +14,16 @@
   display: flex;
   flex-direction: column;
   border-right: 1px solid #E5E7EB; /* gray-200 */
+  height: 100%;
+  background: linear-gradient(to bottom, var(--sidebar-gradient-start), var(--sidebar-gradient-via), var(--sidebar-gradient-end));
+  color: white;
+  width: 16rem; /* w-64 */
+  transition: width 0.3s ease;
+  z-index: 40;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .sidebar.collapsed {
@@ -28,6 +38,11 @@
 
 .toggle-btn {
   @apply bg-transparent text-gray-800 p-2 rounded-full;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.toggle-btn {
+  @apply bg-transparent text-white p-2 rounded-full;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
@@ -36,6 +51,7 @@
 
 .toggle-btn:hover {
   @apply bg-gray-200;
+  @apply bg-white bg-opacity-10;
   transform: scale(1.1);
 }
 
@@ -43,6 +59,7 @@
   @apply flex-1 overflow-y-auto;
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
 }
 
 .sidebar-content::-webkit-scrollbar {
@@ -55,6 +72,7 @@
 
 .sidebar-content::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(255, 255, 255, 0.3);
   border-radius: 20px;
 }
 
@@ -96,6 +114,26 @@
 
 .nav-icon {
   min-width: 20px;
+
+  @apply flex items-center p-3 rounded-lg transition-all duration-300;
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+}
+
+.nav-item:hover {
+  @apply bg-white bg-opacity-10;
+  color: white;
+}
+
+.nav-item.active {
+  @apply bg-white bg-opacity-20 font-semibold;
+  color: white;
+  box-shadow: var(--shadow-md);
+}
+
+.nav-icon {
+  @apply text-xl;
+  min-width: 1.5rem;
 }
 
 .nav-text {
@@ -107,6 +145,7 @@
   padding: 1rem;
   margin-top: auto;
   border-top: 1px solid #E5E7EB; /* gray-200 */
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .sidebar-footer .nav-item-container {
@@ -115,6 +154,7 @@
 
 .sidebar-footer .nav-item {
   background-color: rgba(0, 0, 0, 0.05);
+  background-color: rgba(255, 255, 255, 0.1);
   box-shadow: var(--shadow-sm);
   transition: all 0.3s ease;
 }
@@ -122,6 +162,8 @@
 .sidebar-footer .nav-item:hover {
   background-color: #E5E7EB; /* gray-200 */
   box-shadow: var(--shadow-sm);
+  background-color: rgba(255, 255, 255, 0.2);
+  box-shadow: var(--shadow-md);
   transform: translateY(-2px);
 }
 

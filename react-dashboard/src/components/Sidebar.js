@@ -12,6 +12,13 @@ import {
   X,
   ArrowLeftRight
 } from 'lucide-react';
+  FaHome, 
+  FaExchangeAlt, 
+  FaChartBar,
+  FaBars,
+  FaTimes,
+  FaUserShield
+} from 'react-icons/fa';
 import './Sidebar.css';
 
 const Sidebar = ({ onCollapse, initialCollapsed = false }) => {
@@ -30,6 +37,10 @@ const Sidebar = ({ onCollapse, initialCollapsed = false }) => {
 
   // We don't want to update isCollapsed when initialCollapsed prop changes
   // This ensures sidebar state persists unless manually toggled
+  // Update when initialCollapsed prop changes
+  useEffect(() => {
+    setIsCollapsed(initialCollapsed);
+  }, [initialCollapsed]);
 
   // Save collapsed state to localStorage whenever it changes
   useEffect(() => {
@@ -73,6 +84,13 @@ const Sidebar = ({ onCollapse, initialCollapsed = false }) => {
 
   return (
     <div className={`sidebar glass-sidebar ${isCollapsed ? 'collapsed' : ''}`}>
+    { path: '/', name: 'Dashboard', icon: FaHome, isActive: location.pathname === '/' || location.pathname === '/dashboard' },
+    { path: '/transactions', name: 'Transactions', icon: FaExchangeAlt, isActive: location.pathname.includes('/transactions') },
+    { path: '/analytics', name: 'Analytics', icon: FaChartBar, isActive: location.pathname === '/analytics' }
+  ];
+
+  return (
+    <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
       <div className="sidebar-header">
         <motion.button
           whileHover={{ scale: 1.1 }}
@@ -84,6 +102,7 @@ const Sidebar = ({ onCollapse, initialCollapsed = false }) => {
           data-tooltip-content={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
           {isCollapsed ? <Menu size={20} /> : <X size={20} />}
+          {isCollapsed ? <FaBars /> : <FaTimes />}
         </motion.button>
         <Tooltip id="sidebar-toggle-tooltip" place="right" />
       </div>
@@ -107,6 +126,7 @@ const Sidebar = ({ onCollapse, initialCollapsed = false }) => {
                 data-tooltip-content={item.name}
               >
                 <item.icon className="nav-icon" size={20} />
+                <item.icon className="nav-icon" />
                 {!isCollapsed && <span className="nav-text">{item.name}</span>}
               </Link>
               {isCollapsed && <Tooltip id={`nav-tooltip-${i}`} place="right" />}
@@ -116,6 +136,32 @@ const Sidebar = ({ onCollapse, initialCollapsed = false }) => {
       </div>
 
       {/* Footer section removed as Access Control has been moved to the navbar */}
+      <div className="sidebar-footer">
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="nav-item-container"
+        >
+          <Link 
+            to="#" 
+            className="nav-item"
+            onClick={(e) => {
+              e.preventDefault();
+              // This would typically open the RBAC modal
+              toast.success('Access Control button clicked', {
+                icon: '🔐',
+                duration: 2000,
+              });
+            }}
+            data-tooltip-id="access-control-tooltip"
+            data-tooltip-content="Access Control"
+          >
+            <FaUserShield className="nav-icon" />
+            {!isCollapsed && <span className="nav-text">Access Control</span>}
+          </Link>
+          {isCollapsed && <Tooltip id="access-control-tooltip" place="right" />}
+        </motion.div>
+      </div>
     </div>
   );
 };

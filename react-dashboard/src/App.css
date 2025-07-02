@@ -1,4 +1,5 @@
 :root {
+
   /* Modern Gradient Backgrounds */
   --bg-gradient-start: #F8FAFC;
   --bg-gradient-end: #EFF6FF;
@@ -9,9 +10,21 @@
   --sidebar-gradient-start: #1E293B;
   --sidebar-gradient-via: #0F172A;
   --sidebar-gradient-end: #0F172A;
+  
+  --bg-gradient-start: #f0f4f8;
+  --bg-gradient-end: #e5ecf3;
+
+  --navbar-gradient-start: #0f172a;
+  --navbar-gradient-end: #1e293b;
+
+  --sidebar-gradient-start: #1e293b;
+  --sidebar-gradient-via: #334155;
+  --sidebar-gradient-end: #475569;
+
 
   --card-gradient-start: #ffffff;
   --card-gradient-end: #f9fafb;
+
 
   --card-header-gradient-start: #3B82F6;
   --card-header-gradient-end: #2563EB;
@@ -52,12 +65,40 @@
   --shadow-glow: 0 0 15px rgba(59, 130, 246, 0.5);
 
   /* Spacing */
+  --card-header-gradient-start: #4f46e5;
+  --card-header-gradient-end: #4338ca;
+
+  --primary-accent: #FFFFFF;
+  --danger-accent: #ef4444;
+  --success-accent: #10b981;
+
+  --text-primary: #FFFFFF;
+  --text-muted: #6b7280;
+
+  --primary-color: #3182ce;
+  --primary-light: #4299e1;
+  --secondary-color: #805ad5;
+  --secondary-light: #9f7aea;
+  --success-color: #38a169;
+  --danger-color: #e53e3e;
+  --warning-color: #dd6b20;
+  --light-color: #f7fafc;
+  --dark-color: #1a202c;
+  --gray-color: #718096;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.04);
+
+
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
   --space-4: 1rem;
   --space-6: 1.5rem;
   --space-8: 2rem;
+
   --space-10: 2.5rem;
   --space-12: 3rem;
   --space-16: 4rem;
@@ -72,6 +113,7 @@
 }
 
 body.dark-mode {
+
   /* Modern Dark Mode Gradient Backgrounds */
   --bg-gradient-start: #0F172A;
   --bg-gradient-end: #1E293B;
@@ -181,12 +223,38 @@ a {
 a:hover {
   color: var(--primary-dark);
   text-decoration: underline;
+
+  --bg-gradient-start: #1a202c;
+  --bg-gradient-end: #2d3748;
+  --navbar-gradient-start: #000000;
+  --navbar-gradient-via: #1a1a1a;
+  --navbar-gradient-end: #2d2d2d;
+  --sidebar-gradient-start: #000000;
+  --sidebar-gradient-via: #1a1a1a;
+  --sidebar-gradient-end: #2d2d2d;
+  --card-gradient-start: #2d3748;
+  --card-gradient-end: #1a202c;
+  --card-header-gradient-start: #1a1a1a;
+  --card-header-gradient-end: #2d2d2d;
+
+  --light-color: #2d3748;
+  --dark-color: #f7fafc;
+  --gray-color: #a0aec0;
+}
+
+body {
+  background-color: var(--light-color);
+  color: var(--dark-color);
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+
 }
 
 .App {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+
   background-color: transparent;
 }
 
@@ -232,6 +300,11 @@ a:hover {
 }
 
 .content-container {
+}
+
+.content-container {
+  flex: 1;
+
   padding: var(--space-6);
   width: 100%;
   max-width: 1400px;
@@ -246,6 +319,7 @@ a:hover {
   border: none;
   transition: all 0.3s ease;
   background-color: white;
+
   position: relative;
   overflow: hidden;
   border-top: 4px solid var(--primary-color);
@@ -265,6 +339,12 @@ a:hover {
 .card:hover {
   box-shadow: var(--shadow-xl);
   transform: translateY(-5px);
+
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg);
+
 }
 
 .card-header {
@@ -395,11 +475,18 @@ a:hover {
   border-radius: var(--radius-md);
   padding: var(--space-2) var(--space-4);
   font-weight: 600;
+
+.btn {
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-4);
+  font-weight: 500;
+
   transition: all 0.3s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
+
   position: relative;
   overflow: hidden;
   letter-spacing: 0.5px;
@@ -427,10 +514,19 @@ a:hover {
   border: none;
   box-shadow: 0 4px 6px rgba(99, 102, 241, 0.25);
   color: white;
+
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+  border: none;
+  box-shadow: var(--shadow-sm);
+
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
+
   box-shadow: 0 6px 10px rgba(99, 102, 241, 0.3);
   background: linear-gradient(135deg, var(--primary-light), var(--primary-color));
 }
@@ -513,6 +609,21 @@ a:hover {
   background-color: var(--accent-color);
   color: white;
   box-shadow: 0 4px 6px rgba(16, 185, 129, 0.25);
+
+  box-shadow: var(--shadow-md);
+  background: linear-gradient(135deg, var(--secondary-light), var(--primary-light));
+}
+
+.btn-outline-primary {
+  border: 2px solid var(--secondary-color);
+  color: var(--secondary-color);
+  background: transparent;
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--secondary-color);
+  color: white;
+
 }
 
 .table {
@@ -524,6 +635,7 @@ a:hover {
 .transaction-table {
   border-radius: var(--radius-lg);
   overflow: hidden;
+
   box-shadow: var(--shadow-md);
   border: 1px solid rgba(0, 0, 0, 0.05);
   width: 100%;
@@ -531,12 +643,19 @@ a:hover {
 
 .transaction-table th {
   background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  box-shadow: var(--shadow-sm);
+}
+
+.transaction-table th {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+
   color: white;
   padding: var(--space-4);
   font-weight: 600;
   text-transform: uppercase;
   font-size: 0.85rem;
   letter-spacing: 0.05em;
+
   position: sticky;
   top: 0;
   z-index: 10;
@@ -548,17 +667,21 @@ a:hover {
 
 .transaction-table th:last-child {
   border-top-right-radius: var(--radius-md);
+
 }
 
 .transaction-table td {
   padding: var(--space-4);
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   vertical-align: middle;
+
   transition: all 0.2s ease;
+
 }
 
 .transaction-row {
   cursor: pointer;
+
   transition: all 0.3s ease;
   position: relative;
 }
@@ -591,6 +714,13 @@ a:hover {
 
 .transaction-table tbody tr:last-child td:last-child {
   border-bottom-right-radius: var(--radius-md);
+
+  transition: all 0.2s ease;
+}
+
+.transaction-row:hover {
+  background-color: rgba(220, 20, 60, 0.05);
+
 }
 
 .fraud-flag {
@@ -1437,7 +1567,6 @@ body.dark-mode .rbac-role-description,
 body.dark-mode .rbac-permission-description {
   color: #a0aec0;
 }
-
 body.dark-mode .rbac-permission-item {
   border-color: #4a5568;
 }
@@ -1454,3 +1583,22 @@ body.dark-mode .rbac-info-alert {
   background-color: rgba(66, 153, 225, 0.1);
   border-left-color: var(--primary-light);
 }
+
+@media (max-width: 768px) {
+  .content-container {
+    padding: var(--space-4);
+  }
+
+  .stats-card .value {
+    font-size: 1.5rem;
+  }
+
+  .stats-card .icon {
+    font-size: 2rem;
+  }
+
+  .card-header {
+    padding: var(--space-3) var(--space-4);
+  }
+}
+
