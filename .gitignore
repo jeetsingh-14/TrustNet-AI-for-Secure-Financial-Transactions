@@ -48,4 +48,4 @@ react-dashboard/build/
 
 # Package lock
 yarn.lock
-package-lock.json
+react-dashboard/package-lock.json

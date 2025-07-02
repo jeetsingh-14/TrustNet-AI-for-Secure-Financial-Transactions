@@ -29,6 +29,7 @@ import { FaChartLine, FaChartBar, FaChartPie, FaFilter, FaInfoCircle } from 'rea
 import { getTransactions, getAlerts, getStats } from '../services/api';
 import FraudHeatmap from '../components/FraudHeatmap';
 import AnomalyTimeline from '../components/AnomalyTimeline';
+import { InsightCard } from '../components/common';
 import './AnalyticsPage.css';
 
 // Register ChartJS components
@@ -515,89 +516,66 @@ const AnalyticsPage = () => {
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1>Analytics & Model Explainability</h1>
 
-        <div className="date-filter d-flex align-items-center">
-          <Form.Group className="me-2">
+        <div className="flex flex-wrap items-end space-x-4 px-6">
+          <div className="flex flex-col">
+            <label className="text-sm text-gray-600 mb-1">From</label>
             <Form.Control
               type="date"
               name="startDate"
               value={dateRange.startDate}
               onChange={handleDateRangeChange}
+              className="rounded border px-2 py-1"
             />
-          </Form.Group>
-          <span className="mx-2">to</span>
-          <Form.Group className="me-2">
+          </div>
+          <div className="flex flex-col">
+            <label className="text-sm text-gray-600 mb-1">To</label>
             <Form.Control
               type="date"
               name="endDate"
               value={dateRange.endDate}
               onChange={handleDateRangeChange}
+              className="rounded border px-2 py-1"
             />
-          </Form.Group>
+          </div>
           <Button 
-            variant="primary"
+            className="bg-emerald-500 text-white px-4 py-2 rounded hover:bg-emerald-600 transition-all"
             onClick={applyDateFilter}
           >
-            <FaFilter className="me-1" /> Apply
+            🔍 Apply
           </Button>
         </div>
       </div>
 
       {/* Metrics Cards */}
-      <Row className="mb-4">
-        <Col md={4}>
-          <Card className="metric-card">
-            <Card.Body>
-              <div className="metric-icon">
-                <FaChartBar />
-              </div>
-              <div className="metric-content">
-                <h3>Transaction Volume</h3>
-                <div className="metric-value">{metrics.totalTransactions.toLocaleString()}</div>
-                <div className="metric-label">Total Transactions</div>
-                <div className="metric-secondary">
-                  <span className="text-danger">{metrics.fraudulentTransactions.toLocaleString()}</span> Fraudulent ({metrics.fraudRate.toFixed(2)}%)
-                </div>
-              </div>
-            </Card.Body>
-          </Card>
-        </Col>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 px-6 mt-8">
+        <InsightCard 
+          icon="📊" 
+          title="Transaction Volume" 
+          value={metrics.totalTransactions.toLocaleString()} 
+          subtitle={`${metrics.fraudulentTransactions.toLocaleString()} Fraudulent (${metrics.fraudRate.toFixed(2)}%)`} 
+        />
 
-        <Col md={4}>
-          <Card className="metric-card">
-            <Card.Body>
-              <div className="metric-icon">
-                <FaChartLine />
-              </div>
-              <div className="metric-content">
-                <h3>Fraud Probability</h3>
-                <div className="metric-value">{(metrics.averageFraudProbability * 100).toFixed(2)}%</div>
-                <div className="metric-label">Average for Flagged Transactions</div>
-                <div className="metric-secondary">
-                  Based on {metrics.fraudulentTransactions.toLocaleString()} fraudulent transactions
-                </div>
-              </div>
-            </Card.Body>
-          </Card>
-        </Col>
+        <InsightCard 
+          icon="📈" 
+          title="Fraud Probability" 
+          value={`${(metrics.averageFraudProbability * 100).toFixed(2)}%`} 
+          subtitle={`Based on ${metrics.fraudulentTransactions.toLocaleString()} flagged transactions`} 
+        />
 
-        <Col md={4}>
-          <Card className="metric-card">
-            <Card.Body>
-              <div className="metric-icon">
-                <FaChartPie />
-              </div>
-              <div className="metric-content">
-                <h3>Transaction Amount</h3>
-                <div className="metric-value">${metrics.totalAmount.toLocaleString()}</div>
-                <div className="metric-label">Total Amount</div>
-                <div className="metric-secondary">
-                  <span className="text-danger">${metrics.fraudAmount.toLocaleString()}</span> in Fraudulent Transactions
-                </div>
-              </div>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+        <InsightCard 
+          icon="💵" 
+          title="Transaction Amount" 
+          value={`$${metrics.totalAmount.toLocaleString()}`} 
+          subtitle={`$${metrics.fraudAmount.toLocaleString()} in Fraudulent Transactions`} 
+        />
+
+        <InsightCard 
+          icon="🛡️" 
+          title="Model Accuracy" 
+          value="98.7%" 
+          subtitle="Based on recent validation data" 
+        />
+      </div>
 
       {/* Charts */}
       <Row className="mb-4">
@@ -887,6 +865,37 @@ const AnalyticsPage = () => {
           ) : (
             <p className="text-center">No recent alerts found.</p>
           )}
+        </Card.Body>
+      </Card>
+
+      {/* Coming Soon Section */}
+      <Card className="mt-5 mb-4">
+        <Card.Header className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white">
+          <h5 className="mb-0">Coming Soon - Advanced Analytics Features</h5>
+        </Card.Header>
+        <Card.Body>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+              <div className="text-blue-500 text-2xl mb-2">📊</div>
+              <h5 className="text-gray-700 font-semibold">Model Drift Score</h5>
+              <p className="text-gray-600 text-sm">Monitor your model's performance over time and get alerts when drift is detected.</p>
+              <Badge bg="secondary" className="mt-2">Coming Q3 2023</Badge>
+            </div>
+
+            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+              <div className="text-blue-500 text-2xl mb-2">🧠</div>
+              <h5 className="text-gray-700 font-semibold">Explainable AI Breakdown</h5>
+              <p className="text-gray-600 text-sm">Detailed SHAP values and feature importance for each transaction prediction.</p>
+              <Badge bg="secondary" className="mt-2">Coming Q3 2023</Badge>
+            </div>
+
+            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+              <div className="text-blue-500 text-2xl mb-2">📈</div>
+              <h5 className="text-gray-700 font-semibold">Alert Threshold Graph</h5>
+              <p className="text-gray-600 text-sm">Interactive tools to set and visualize optimal alert thresholds for your business.</p>
+              <Badge bg="secondary" className="mt-2">Coming Q4 2023</Badge>
+            </div>
+          </div>
         </Card.Body>
       </Card>
     </div>

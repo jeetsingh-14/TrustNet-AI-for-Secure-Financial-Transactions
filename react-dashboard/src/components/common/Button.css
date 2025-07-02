@@ -12,28 +12,30 @@
 
 /* Primary button */
 .trustnet-btn-primary {
-  background-color: var(--primary-color);
-  border-color: var(--primary-color);
+  background-color: #10B981; /* bg-emerald-500 */
+  border-color: #10B981;
+  color: white;
 }
 
 .trustnet-btn-primary:hover, 
 .trustnet-btn-primary:focus {
-  background-color: #1a2a3a;
-  border-color: #1a2a3a;
+  background-color: #059669; /* bg-emerald-600 */
+  border-color: #059669;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transform: translateY(-1px);
 }
 
 /* Secondary button */
 .trustnet-btn-secondary {
-  background-color: var(--secondary-color);
-  border-color: var(--secondary-color);
+  background-color: #F1F5F9; /* bg-slate-100 */
+  border-color: #F1F5F9;
+  color: #334155; /* text-slate-700 */
 }
 
 .trustnet-btn-secondary:hover, 
 .trustnet-btn-secondary:focus {
-  background-color: #2980b9;
-  border-color: #2980b9;
+  background-color: #E2E8F0; /* bg-slate-200 */
+  border-color: #E2E8F0;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transform: translateY(-1px);
 }

@@ -28,17 +28,17 @@ L.Marker.prototype.options.icon = DefaultIcon;
 const generateMockFraudData = (count = 100) => {
   const fraudTypes = ['PAYMENT', 'TRANSFER', 'CASH_OUT', 'DEBIT'];
   const riskLevels = ['low', 'medium', 'high'];
-  
+
   return Array.from({ length: count }, (_, i) => {
     const isFraud = Math.random() > 0.7; // 30% chance of fraud
     const riskLevel = isFraud 
       ? (Math.random() > 0.5 ? 'high' : 'medium')
       : (Math.random() > 0.7 ? 'medium' : 'low');
-    
+
     // Generate random dates within the last 30 days
     const date = new Date();
     date.setDate(date.getDate() - Math.floor(Math.random() * 30));
-    
+
     return {
       id: `fraud-${i}`,
       lat: 40 - (Math.random() * 10), // Random latitude around North America
@@ -57,31 +57,31 @@ const generateMockFraudData = (count = 100) => {
 // HeatmapLayer component
 const HeatmapLayer = ({ points }) => {
   const map = useMap();
-  
+
   useEffect(() => {
     if (!points.length) return;
-    
+
     // Convert points to format expected by Leaflet.heat
     const heatPoints = points.map(p => [
       p.lat, 
       p.lng, 
       p.fraudProbability // Weight by fraud probability
     ]);
-    
+
     // Create and add heat layer
     const heat = L.heatLayer(heatPoints, {
       radius: 25,
       blur: 15,
       maxZoom: 10,
-      gradient: { 0.4: 'blue', 0.6: 'yellow', 0.8: 'orange', 1.0: 'red' }
+      gradient: { 0.4: '#A7F3D0', 0.6: '#6EE7B7', 0.8: '#34D399', 1.0: '#10B981' }
     }).addTo(map);
-    
+
     // Cleanup
     return () => {
       map.removeLayer(heat);
     };
   }, [map, points]);
-  
+
   return null;
 };
 
@@ -95,13 +95,13 @@ const FraudHeatmap = () => {
     fraudType: 'all',
     riskLevel: 'all'
   });
-  
+
   const mapRef = useRef(null);
-  
+
   // Load fraud data
   useEffect(() => {
     setLoading(true);
-    
+
     // In a real app, this would be an API call with filters
     // For now, we'll use mock data
     setTimeout(() => {
@@ -110,21 +110,21 @@ const FraudHeatmap = () => {
       setLoading(false);
     }, 1000);
   }, []);
-  
+
   // Filter data based on user selections
   const filteredData = fraudData.filter(item => {
     const itemDate = new Date(item.timestamp);
     const startDate = new Date(filters.startDate);
     const endDate = new Date(filters.endDate);
     endDate.setHours(23, 59, 59); // Include the entire end day
-    
+
     const dateInRange = itemDate >= startDate && itemDate <= endDate;
     const typeMatches = filters.fraudType === 'all' || item.transactionType === filters.fraudType;
     const riskMatches = filters.riskLevel === 'all' || item.riskLevel === filters.riskLevel;
-    
+
     return dateInRange && typeMatches && riskMatches;
   });
-  
+
   // Handle filter changes
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
@@ -133,13 +133,13 @@ const FraudHeatmap = () => {
       [name]: value
     }));
   };
-  
+
   // Apply filters
   const applyFilters = () => {
     // In a real app, this might trigger a new API call
     // For our mock data, the filtering happens in the filteredData variable
   };
-  
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -149,7 +149,7 @@ const FraudHeatmap = () => {
       <Card className="mb-4 fraud-heatmap-card">
         <Card.Header className="d-flex justify-content-between align-items-center">
           <div className="d-flex align-items-center">
-            <FaMapMarkedAlt className="me-2 text-primary" />
+            <FaMapMarkedAlt className="me-2 text-success" />
             <h5 className="mb-0">Fraud Risk Heatmap</h5>
           </div>
           <div>
@@ -163,7 +163,7 @@ const FraudHeatmap = () => {
             />
           </div>
         </Card.Header>
-        
+
         <Card.Body>
           {/* Filters */}
           <div className="mb-4 p-3 bg-light rounded">
@@ -223,7 +223,7 @@ const FraudHeatmap = () => {
               </Col>
               <Col md={2}>
                 <Button 
-                  variant="primary" 
+                  variant="success" 
                   className="w-100"
                   onClick={applyFilters}
                 >
@@ -232,12 +232,12 @@ const FraudHeatmap = () => {
               </Col>
             </Row>
           </div>
-          
+
           {/* Map */}
           <div className="fraud-map-container">
             {loading ? (
               <div className="text-center p-5">
-                <div className="spinner-border text-primary" role="status">
+                <div className="spinner-border text-success" role="status">
                   <span className="visually-hidden">Loading...</span>
                 </div>
                 <p className="mt-3">Loading fraud data...</p>
@@ -253,7 +253,7 @@ const FraudHeatmap = () => {
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                
+
                 {viewMode === 'heatmap' ? (
                   <HeatmapLayer points={filteredData} />
                 ) : (
@@ -287,7 +287,7 @@ const FraudHeatmap = () => {
               </MapContainer>
             )}
           </div>
-          
+
           {/* Stats */}
           <div className="mt-3 d-flex justify-content-between">
             <div className="fraud-map-stat">
